@@ -10,7 +10,12 @@
         <div class="w-3/4 py-4">
             <slot name="value">
                 <p class="text-90" :title="this.field.value" :aria-label="this.field.value">{{ getOptionLabel(value) }}</p>
-                <span v-if="hasOptionHint(value)" class="radio-hint mt-1 block text-sm text-80 leading-normal">{{ getOptionHint(value) }}</span>
+                <template v-if="asHtml">
+                    <span v-if="field.stack && hasOptionHint(option)" class="mlbz-radio-hint mt-1 block text-sm text-80 leading-normal" v-html="getOptionHint(option)"></span>
+                </template>
+                <template v-else>
+                    <span v-if="field.stack && hasOptionHint(option)" class="mlbz-radio-hint mt-1 block text-sm text-80 leading-normal">{{ getOptionHint(option) }}</span>
+                </template>
             </slot>
         </div>
     </div>
@@ -46,6 +51,11 @@
                 return this.field.default;
             }
         },
+        data() {
+            return {
+                asHtml : this.field.asHtml || false
+            }
+        }
     }
 </script>
 

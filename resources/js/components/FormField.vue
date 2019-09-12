@@ -7,7 +7,13 @@
                     <label :for="`${field.attribute}_${val}`">
                         <input v-model="value" :value="val" :id="`${field.attribute}_${val}`" :name="field.attribute" type="radio">
                         <span class="mlbz-radio-label">{{ getOptionLabel(option) }}</span>
-                        <span v-if="field.stack && hasOptionHint(option)" class="mlbz-radio-hint mt-1 block text-sm text-80 leading-normal">{{ getOptionHint(option) }}</span>
+                        <template v-if="asHtml">
+                            <span v-if="field.stack && hasOptionHint(option)" class="mlbz-radio-hint mt-1 block text-sm text-80 leading-normal" v-html="getOptionHint(option)"></span>
+                        </template>
+                        <template v-else>
+                            <span v-if="field.stack && hasOptionHint(option)" class="mlbz-radio-hint mt-1 block text-sm text-80 leading-normal">{{ getOptionHint(option) }}</span>
+                        </template>
+
                     </label>
                 </div>
             </div>
@@ -39,6 +45,11 @@
         computed: {
             rawValue() {
                 return this.value;
+            }
+        },
+        data() {
+            return {
+                asHtml : this.field.asHtml || false
             }
         },
 
